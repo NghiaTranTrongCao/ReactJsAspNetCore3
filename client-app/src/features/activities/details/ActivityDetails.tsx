@@ -1,37 +1,25 @@
-import React, { SyntheticEvent } from "react";
-import { Card, Image, Icon, Button } from "semantic-ui-react";
-import { IActivity } from "../../../app/models/activity";
+import React, { useContext } from "react";
+import { Card, Image, Button } from "semantic-ui-react";
+import { observer } from "mobx-react-lite";
+import ActivityStore from '../../../app/stores/activityStore';
 
-interface IProps {
-  activity: IActivity;
-  setEditMode: (editMode: boolean) => void;
-  setSelectedActivity: (activity: IActivity | null) => void;
-  deleteActivity: (event: SyntheticEvent<HTMLButtonElement> ,id: string) => void;
-  submitting: boolean,
-  target: string,
-}
+const ActivityDetails: React.FC = () => {
+  const activityStore = useContext(ActivityStore);
+  const { selectedActivity: activity, openEditForm, cancelSelectedActivity } = activityStore;
 
-export const ActivityDetails: React.FC<IProps> = ({
-  activity,
-  setEditMode,
-  setSelectedActivity,
-  deleteActivity,
-  submitting,
-  target
-}) => {
   return (
     <Card fluid>
       <Image
-        src={`/assets/categoryImages/${activity.category}.jpg`}
+        src={`/assets/categoryImages/${activity!.category}.jpg`}
         wrapped
         ui={false}
       />
       <Card.Content>
-        <Card.Header>{activity.title}</Card.Header>
+        <Card.Header>{activity!.title}</Card.Header>
         <Card.Meta>
-          <span className="date">{activity.date}</span>
+          <span className="date">{activity!.date}</span>
         </Card.Meta>
-        <Card.Description>{activity.description}</Card.Description>
+        <Card.Description>{activity!.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths={3}>
@@ -39,24 +27,18 @@ export const ActivityDetails: React.FC<IProps> = ({
             basic
             content="Edit"
             color="blue"
-            onClick={() => setEditMode(true)}
-          ></Button>
-           <Button
-            name={activity.id}
-            loading={target === activity.id && submitting}
-            basic
-            content="Delete"
-            color="red"
-            onClick={(event) => { deleteActivity(event, activity.id); setSelectedActivity(null); }}
+            onClick={() => openEditForm(activity!.id)}
           ></Button>
           <Button
             basic
             content="Cancel"
             color="grey"
-            onClick={() => setSelectedActivity(null)}
+            onClick={cancelSelectedActivity}
           ></Button>
         </Button.Group>
       </Card.Content>
     </Card>
   );
 };
+
+export default observer(ActivityDetails);
