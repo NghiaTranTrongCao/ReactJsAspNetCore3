@@ -13,7 +13,7 @@ export const HomePage = () => {
             alt="logo"
             style={{ marginBottom: 12 }}
           />
-          Reactivitiess
+          Reactivities
         </Header>
         <Header as="h2" inverted content="Welcome to Reactivities" />
         <Button as={Link} to="/activities" size="huge" inverted>
