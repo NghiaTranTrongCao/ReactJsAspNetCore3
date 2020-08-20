@@ -60,7 +60,9 @@ export class ActivityStore {
           this.loadingInitial = false;
         });
       } catch (error) {
-        this.loadingInitial = false;
+        runInAction("load activity error", () => {
+          this.loadingInitial = false;
+        });
         console.log(error);
       }
     }

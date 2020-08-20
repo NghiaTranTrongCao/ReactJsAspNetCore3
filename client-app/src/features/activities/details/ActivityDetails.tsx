@@ -23,8 +23,11 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
     loadActivity(match.params.id);
   }, [loadActivity, match.params.id]);
 
-  if (!activity || loadingInitial)
+  if (loadingInitial)
     return <LoadingComponent content="Loading activity..." />;
+
+  if (!activity)
+    return <h2>Activity Not Found</h2>;
 
   return (
     <Grid>
@@ -37,36 +40,6 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
         <ActivityDetailedSidebar />
       </Grid.Column>
     </Grid>
-    // <Card fluid>
-    //   <Image
-    //     src={`/assets/categoryImages/${activity!.category}.jpg`}
-    //     wrapped
-    //     ui={false}
-    //   />
-    //   <Card.Content>
-    //     <Card.Header>{activity!.title}</Card.Header>
-    //     <Card.Meta>
-    //       <span className="date">{activity!.date}</span>
-    //     </Card.Meta>
-    //     <Card.Description>{activity!.description}</Card.Description>
-    //   </Card.Content>
-    //   <Card.Content extra>
-    //     <Button.Group widths={3}>
-    //       <Button
-    //         as={Link} to={`/manage/${activity.id}`}
-    //         basic
-    //         content="Edit"
-    //         color="blue"
-    //       ></Button>
-    //       <Button
-    //         basic
-    //         content="Cancel"
-    //         color="grey"
-    //         onClick={() => history.push('/activities')}
-    //       ></Button>
-    //     </Button.Group>
-    //   </Card.Content>
-    // </Card>
   );
 };
 
