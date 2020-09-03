@@ -1,3 +1,4 @@
+import { IProfile, IPhoto } from "./../models/profile";
 import { IUser, IUserFormValues } from "./../models/user";
 import { IActivity } from "./../models/activity";
 import axios, { AxiosResponse } from "axios";
@@ -6,13 +7,16 @@ import { toast } from "react-toastify";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
-axios.interceptors.request.use((config) => {
-  const token = window.localStorage.getItem('jwt');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-}, error => { 
-  return Promise.reject(error);
-})
+axios.interceptors.request.use(
+  (config) => {
+    const token = window.localStorage.getItem("jwt");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 axios.interceptors.response.use(undefined, (error) => {
   if (error.message === "Network Error" && !error.response) {
@@ -56,6 +60,15 @@ const requests = {
   put: (url: string, body: {}) =>
     axios.put(url, body).then(sleep(1000)).then(responseBody),
   del: (url: string) => axios.delete(url).then(sleep(1000)).then(responseBody),
+  postForm: (url: string, file: Blob) => {
+    let formData = new FormData();
+    formData.append("File", file);
+    return axios
+      .post(url, formData, {
+        headers: { "Content-type": "multipart/form-data" },
+      })
+      .then(responseBody);
+  },
 };
 
 const Activities = {
@@ -77,6 +90,17 @@ const User = {
     requests.post("/user/register", user),
 };
 
+const Profile = {
+  get: (username: string): Promise<IProfile> =>
+    requests.get(`/profiles/${username}`),
+  uploadPhoto: (file: Blob): Promise<IPhoto> =>
+    requests.postForm(`/photos`, file),
+  setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => requests.del(`photos/${id}`),
+};
+
 export default {
-  Activities, User
+  Activities,
+  User,
+  Profile,
 };

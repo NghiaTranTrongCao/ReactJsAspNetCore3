@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { Container } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import { NavBar } from "../../features/nav/NavBar";
+import NavBar from "../../features/nav/NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { observer } from "mobx-react-lite";
 import {
@@ -13,12 +13,12 @@ import {
 import HomePage from "../../features/home/HomePage";
 import ActivityForm from "../../features/activities/form/ActivityForm";
 import ActivityDetails from "../../features/activities/details/ActivityDetails";
-import LoginForm from "../../features/user/LoginForm";
 import NotFound from "./NotFound";
 import { ToastContainer } from "react-toastify";
 import { RootStoreContext } from "../stores/rootStore";
 import LoadingComponent from "./LoadingComponent";
 import ModalContainer from '../common/modals/ModalContainer';
+import ProfilePage from '../../features/profiles/ProfilePage';
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -61,7 +61,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                   path={["/createActivity", "/manage/:id"]}
                   component={ActivityForm}
                 ></Route>
-                <Route path="/login" component={LoginForm}></Route>
+                <Route path="/profile/:username" component={ProfilePage}></Route>
                 <Route component={NotFound}></Route>
               </Switch>
             </Container>
