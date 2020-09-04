@@ -1,24 +1,34 @@
 import React from "react";
 import { Tab } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
-import ProfilePhotos from './ProfilePhotos';
-import ProfileDescription from './ProfileDescription';
+import ProfilePhotos from "./ProfilePhotos";
+import ProfileDescription from "./ProfileDescription";
+import ProfileFollowing from "./ProfileFollowing";
+import { IProfile } from "../../app/models/profile";
 
-const panes = [
-    { menuItem: 'About', render: () => <ProfileDescription />},
-    { menuItem: 'Photos', render: () => <ProfilePhotos />},
-    { menuItem: 'Activities', render: () => <Tab.Pane>Activities Content</Tab.Pane>},
-    { menuItem: 'Followers', render: () => <Tab.Pane>Followers Content</Tab.Pane>},
-    { menuItem: 'Following', render: () => <Tab.Pane>Following Content</Tab.Pane>}
-];
+interface IProp {
+  setActiveTab: (activeTabIndex: any) => void;
+  profile: IProfile
+}
 
-const ProfileContent = () => {
+const ProfileContent: React.FC<IProp> = ({ setActiveTab, profile }) => {
+  const panes = [
+    { menuItem: "About", render: () => <ProfileDescription /> },
+    { menuItem: "Photos", render: () => <ProfilePhotos /> },
+    {
+      menuItem: "Activities",
+      render: () => <Tab.Pane>Activities Content</Tab.Pane>,
+    },
+    { menuItem: `Followers (${profile.followersCount})`, render: () => <ProfileFollowing /> },
+    { menuItem: `Following (${profile.followingCount})`, render: () => <ProfileFollowing /> },
+  ];
+
   return (
     <Tab
       menu={{ fluid: true, vertical: true }}
       menuPosition="right"
       panes={panes}
-      // activeIndex={1}
+      onTabChange={(e, data) => setActiveTab(data.activeIndex)}
     />
   );
 };
