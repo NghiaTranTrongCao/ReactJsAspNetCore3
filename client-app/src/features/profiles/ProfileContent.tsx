@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileDescription from "./ProfileDescription";
 import ProfileFollowing from "./ProfileFollowing";
+import ProfileActivities from "./ProfileActivities";
 import { IProfile } from "../../app/models/profile";
 
 interface IProp {
@@ -17,7 +18,7 @@ const ProfileContent: React.FC<IProp> = ({ setActiveTab, profile }) => {
     { menuItem: "Photos", render: () => <ProfilePhotos /> },
     {
       menuItem: "Activities",
-      render: () => <Tab.Pane>Activities Content</Tab.Pane>,
+      render: () => <ProfileActivities />,
     },
     { menuItem: `Followers (${profile.followersCount})`, render: () => <ProfileFollowing /> },
     { menuItem: `Following (${profile.followingCount})`, render: () => <ProfileFollowing /> },
